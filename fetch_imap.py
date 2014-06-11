@@ -118,7 +118,7 @@ for mail_num in data[0].split():
 		f.close()
 		
 		printc.info('    file ' + filename + ' saved. ')
-		saved++
+		saved = saved + 1
 	
 	if saved > 0:
 		# also unflag this email
