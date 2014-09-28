@@ -15,8 +15,9 @@ Usage
 -----
 Configure the pins to be dumped in example.py and then run it with
 ```
-$ python3 example.py
+$ sudo python3 example.py
 ```
+Root required for pin access (WiringPi)
 
 Keywords
 --------
