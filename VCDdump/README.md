@@ -21,9 +21,10 @@ Root required for pin access (WiringPi)
 
 Related Work
 ------------
-pi-oscilloscope (https://github.com/ankitaggarwal011/pi-oscilloscope) uses an _ADS1015 Breakout board Analog to Digital converter_ and plots the data with python. (I haven't tried it yet)
-Pro: It measures with 12 Bit instead of only binary.
-Contra: I think it might be very slow as well. 
+* pi-oscilloscope (https://github.com/ankitaggarwal011/pi-oscilloscope) uses an _ADS1015 Breakout board Analog to Digital converter_ and plots the data with python. (I haven't tried it yet)
+	* Pro: It measures with 12 Bit instead of only binary.
+	* Contra: I think it might be very slow as well. 
+* Panalyzer (https://github.com/richardghirst/Panalyzer)
 
 Keywords
 --------
