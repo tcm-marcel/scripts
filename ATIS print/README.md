@@ -1,6 +1,6 @@
 # ATIS print
 
-This script is for students at the KIT[^kit], who have access to an ATIS[^atis] account[^atisacc]. It takes one or more files as argument and prints them remotely on a defined printer in the ATIS[^atis].
+This script is for students at the KIT[1], who have access to an ATIS[2] account[3]. It takes one or more files as argument and prints them remotely on a defined printer in the ATIS[2].
 
 ## Usage
 
@@ -22,8 +22,8 @@ It depends on basic applications which are default on most unix-like operating s
 - TODO: Allow paths in filenames
 - TODO: Create Install/setup scripts for easier usage (install i.e. to `~/bin/`)
 
-[^kit]: Karlsruher Institute of Technology
+[1]: Karlsruher Institute of Technology
 
-[^atis]: Abteilung für technische Infrastruktur Studentenpool at Karlsruher Institute for Technology (KIT)
+[2]: Abteilung für technische Infrastruktur Studentenpool at Karlsruher Institute for Technology (KIT)
 
-[^atisacc]: Those accounts have usernames like `s_user`. It's given to students of informatics and information economy.
+[3]: Those accounts have usernames like `s_user`. It's given to students of informatics and information economy.
