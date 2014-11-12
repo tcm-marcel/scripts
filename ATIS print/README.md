@@ -1,12 +1,16 @@
 # ATIS print
 
-This script is for students at the KIT[1], who have access to an ATIS[2] account[3]. It takes one or more files as argument and prints them remotely on a defined printer in the ATIS[2].
+This script is for students at the KIT[1], who have access to an ATIS[2] account[3]. It takes one or more files as argument and prints them remotely on a defined printer in the ATIS.
 
 ## Usage
 
-    .../ATIS_print [file(s)]
+The order of parameters is completely irrelevant.
 
-- **files:** Regular expressions or single files are allowed. Currently, only filenames are allowed, no paths included.
+    .../ATIS_print [file(s)]* [-u user] [-p printer]
+
+- **files:** Regular expressions and single files are allowed.
+- **user:** Specify a user for printing. This will dominate the default, but not override it permanently. Like a one-time-ticket. Useful for quickly printing things for others.
+- **printer:** Use given printer. Must be sw1, sw2, sw3 (monochrome) or farb1 (color).
 
 ## Dependencies
 
@@ -16,14 +20,16 @@ It depends on basic applications which are default on most unix-like operating s
 
 ## Contribution/TODOs
 
-- DONE: Support directories and multiple files.
+- DONE: Support directories (as regular expression) and multiple files.
 - BUG: Files with spaces (and other special chars?) will not be printed.
+- BUG: Files with same names in different directories in one atis\_print call cause problems.
 - TODO: Allow to set up a number of copies (like `-# 42`)
-- TODO: Allow paths in filenames
+- DONE: Allow paths in filenames
 - TODO: Create Install/setup scripts for easier usage (install i.e. to `~/bin/`)
+- TODO: User should only need to input the password one time
 
-[1]: Karlsruher Institute of Technology
+[1] **K**arlsruher **I**nstitute of **T**echnology
 
-[2]: Abteilung für technische Infrastruktur Studentenpool at Karlsruher Institute for Technology (KIT)
+[2] "**A**bteilung für **t**echnische **I**nfra**s**truktur" (Studentenpool) at the KIT
 
-[3]: Those accounts have usernames like `s_user`. It's given to students of informatics and information economy.
+[3] Those accounts have usernames like `s_user`. It's given to students of informatics and business informatics.
