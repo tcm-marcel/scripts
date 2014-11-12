@@ -21,7 +21,7 @@ It depends on basic applications which are default on most unix-like operating s
 ## Contribution/TODOs
 
 - DONE: Support directories (as regular expression) and multiple files.
-- BUG: Files with spaces (and other special chars?) will not be printed.
+- BUG: Files with spaces in filename or path will not be printed.
 - BUG: Files with same names in different directories in one atis\_print call cause problems.
 - TODO: Allow to set up a number of copies (like `-# 42`)
 - DONE: Allow paths in filenames
