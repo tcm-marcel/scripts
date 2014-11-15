@@ -25,30 +25,33 @@ fcount=0	#amount of files to be printed
 skipNum=0	#amount of invalid parameters
 
 stage() {
-	fpaths+=" $1"
-	fnames+=" $(basename $1)"
+	fpaths+=" \"$1\""
+	fnames+=" \"$(basename "$1")\""
 	let "fcount += 1"
 }
 
 while (test $# -gt 0); do
-	if (test -f $1) then
-		stage $1
+	if (test -f "$1") then
+		stage "$1"
 		shift
-	elif (test $1 = "-u") && (test "$2" != "") then
+	elif (test "$1" = "-u") && (test "$2" != "") then
 		shift
-		user=$1
+		user="$1"
 		shift
-	elif (test $1 = "-p";) && (test "$2" != "") then
+	elif (test "$1" = "-p";) && (test "$2" != "") then
 		shift
-		case $1 in
+		case "$1" in
 			sw1|sw2|sw3|farb1) 	printer=$1;;
 			*)			let "skipNum += 1";;
 		esac
 		shift
 	else
-		#unknown parameter, skip it.
-		let "skipNum += 1"
-		#echo $1 #DEBUG
+		#unknown parameter -> ignore, warning message
+		#directory -> ignore (no -r, use regular expressions instead)
+		if !(test -d "$1";) then
+			let "skipNum += 1"
+			echo "Ignore $1 (unknown parameter)"
+		fi
 		shift
 	fi
 done
@@ -65,10 +68,10 @@ if (test $skipNum -ne 0;) then
 fi
 echo "This will print $fcount file(s) as \"$user\" on printer \"pool-$printer\""
 echo "Files: $fpaths"
-#echo "fnames: $fnames"	#DEBUG
-#echo "scp $fpaths \"$user@i08fs1.ira.uka.de:~\""	#DEBUG
-#echo "ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $fnames"	#DEBUG
-#exit 0	#DEBUG
+echo "fnames: $fnames"	#DEBUG
+echo "scp $fpaths \"$user@i08fs1.ira.uka.de:~\""	#DEBUG
+echo "ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $fnames"	#DEBUG
+exit 0	#DEBUG
 echo "To abort, press CTRL+C when you are asked for the password."
 ###############################################################################
 
