@@ -8,8 +8,7 @@ printer="sw3"
 ##############################################################################
 
 ### Known bugs ###############################################################
-# - Files with spaces or other special chars will not be printed.
-# - Files with same names in different directories in one atis\_print call
+# - Files with same names in different directories in one atis_print call
 #   cause problems.
 ##############################################################################
 
@@ -19,14 +18,14 @@ printer="sw3"
 # Also supports options -u (user) and -p (printer).
 # Invalid input will be ignored.
 # Example: ./atis_print file1 file2 directory/* -u s_muster -p sw2
-fpaths=		#file paths
-fnames=		#file names
-fcount=0	#amount of files to be printed
-skipNum=0	#amount of invalid parameters
+fpaths=		#file paths (array)
+fnames=		#file names (array)
+fcount=0	#amount of files to be printed (integer)
+skipNum=0	#amount of invalid parameters  (integer)
 
 stage() {
-	fpaths+=" \"$1\""
-	fnames+=" \"$(basename "$1")\""
+	fpaths[$fcount]="$1"
+	fnames[$fcount]="\"$(basename "$1")\""
 	let "fcount += 1"
 }
 
@@ -55,7 +54,7 @@ while (test $# -gt 0); do
 		shift
 	fi
 done
-if (test -z "$fnames";) then
+if (test ${#fnames[@]} -le 0;) then
         echo "No file given"
         exit 1
 fi
@@ -67,19 +66,18 @@ if (test $skipNum -ne 0;) then
 	echo "WARNING: $skipNum parameters are invalid and ignored."
 fi
 echo "This will print $fcount file(s) as \"$user\" on printer \"pool-$printer\""
-echo "Files: $fpaths"
-echo "fnames: $fnames"	#DEBUG
-echo "scp $fpaths \"$user@i08fs1.ira.uka.de:~\""	#DEBUG
-echo "ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $fnames"	#DEBUG
-exit 0	#DEBUG
+echo "Files: ${fpaths[@]}"
+#echo "fnames: ${fnames[@]}"	#DEBUG
+#echo "scp ${fpaths[@]} \"$user@i08fs1.ira.uka.de:~\""	#DEBUG
+#echo "ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer ${fnames[@]}"
+#exit 0	#DEBUG
 echo "To abort, press CTRL+C when you are asked for the password."
 ###############################################################################
 
 
 ### Printing process ##########################################################
 echo "Copy files to ATIS account: "
-scp $fpaths "$user@i08fs1.ira.uka.de:~"
+scp "${fpaths[@]}" "$user@i08fs1.ira.uka.de:~"
 echo "Print files and delete copies on ATIS account: "
-ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $fnames
+ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer "${fnames[@]}"
 ###############################################################################
-

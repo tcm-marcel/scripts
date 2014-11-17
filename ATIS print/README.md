@@ -21,15 +21,15 @@ It depends on basic applications which are default on most unix-like operating s
 ## Contribution/TODOs
 
 - DONE: Support directories (as regular expression) and multiple files.
-- BUG: Files with spaces in filename or path will not be printed.
+- FIXD: Files with spaces in filename or path will not be printed.
 - BUG: Files with same names in different directories in one atis\_print call cause problems.
 - TODO: Allow to set up a number of copies (like `-# 42`)
 - DONE: Allow paths in filenames
 - TODO: Create Install/setup scripts for easier usage (install i.e. to `~/bin/`)
 - TODO: User should only need to input the password one time
 
-[1] **K**arlsruher **I**nstitute of **T**echnology
+[1] Karlsruher Institute of Technology
 
-[2] "**A**bteilung für **t**echnische **I**nfra**s**truktur" (Studentenpool) at the KIT
+[2] "Abteilung für technische Infrastruktur" (Studentenpool) at the KIT
 
 [3] Those accounts have usernames like `s_user`. It's given to students of informatics and business informatics.
