@@ -52,6 +52,13 @@ while (test $# -gt 0); do
 		pages="-o page-ranges=$1-$2"
 		shift
 		shift
+	elif (test "$1" = "-c") && (test "$2" -ge 2) then
+		shift
+		case "$1" in
+			2|4|6|9)	compact="-o number-up=$1";;
+			*)		let "skipNum += 2";
+		esac
+		shift
 	else
 		#unknown parameter -> ignore, warning message
 		#directory -> ignore (no -r, use regular expressions instead)
@@ -83,7 +90,7 @@ fi
 echo "Files: ${fpaths[@]}"
 #echo "fnames: ${fnames[@]}"	#DEBUG
 #echo "scp ${fpaths[@]} \"$user@i08fs1.ira.uka.de:~\""	#DEBUG
-#echo "ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer ${fnames[@]} $printNum" $pages
+#echo "ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $printNum $compact $pages ${fnames[@]}"
 #exit 0	#DEBUG
 echo "To abort, press CTRL+C when you are asked for the password."
 ###############################################################################
@@ -93,5 +100,5 @@ echo "To abort, press CTRL+C when you are asked for the password."
 echo "Copy files to ATIS account: "
 scp "${fpaths[@]}" "$user@i08fs1.ira.uka.de:~"
 echo "Print files and delete copies on ATIS account: "
-ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $printNum $pages "${fnames[@]}"
+ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $printNum $compact $pages "${fnames[@]}"
 ###############################################################################
