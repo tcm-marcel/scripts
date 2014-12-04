@@ -143,6 +143,7 @@ fi
 echo "Copy files to ATIS account: "
 scp "${fpaths[@]}" "$user@i08fs1.ira.uka.de:~"
 echo "Print files and delete copies on ATIS account: "
-ssh -l $user i08fs1.ira.uka.de lpr -r -P pool-$printer $printNum $compact $pages "${fnames[@]}"
+ssh -l $user i08fs1.ira.uka.de \
+	lpr -r -P pool-$printer $printNum $compact $pages "${fnames[@]}"
 rm -rf $dirTMP
 ###############################################################################
