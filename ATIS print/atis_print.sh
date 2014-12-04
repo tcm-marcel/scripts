@@ -53,9 +53,8 @@ while (test $# -gt 0); do
 		stage "$1"
 		shift
 	elif (test "$1" = "-u") && (test "$2" != "") then
-		shift
-		user="$1"
-		shift
+		user="$2"
+		shift; shift
 	elif (test "$1" = "-p") && (test "$2" != "") then
 		case "$2" in
 			sw1|sw2|sw3|farb1) 	printer=$2;;
@@ -63,16 +62,13 @@ while (test $# -gt 0); do
 		esac
 		shift; shift
 	elif (test "$1" = "-n") && (test "$2" -gt 0) then
-		shift
-		printNum="-# $1"
-		shift
+		printNum="-# $2"
+		shift; shift
 	elif (test "$1" = "-r") && (test "$2" != "") && (test "$3" != "") then
-		shift
-		lowEnd=$1
-		upperEnd=$2
-		pages="-o page-ranges=$1-$2"
-		shift
-		shift
+		lowEnd=$2
+		upperEnd=$3
+		pages="-o page-ranges=$2-$3"
+		shift; shift; shift
 	elif (test "$1" = "-c") && (test "$2" -ge 2) then
 		case "$2" in
 			2|4|6|9)	compact="-o number-up=$2";;
