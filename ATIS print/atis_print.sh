@@ -42,6 +42,12 @@ isPDF() {
         fi
 }
 
+#skip warns user about given parameters and counts them
+skip() {
+	let "skipNum += 1"
+	echo "Ignore $@ (invalid/unknown option)"
+}
+
 while (test $# -gt 0); do
 	if (test -f "$1") then
 		stage "$1"
@@ -51,12 +57,11 @@ while (test $# -gt 0); do
 		user="$1"
 		shift
 	elif (test "$1" = "-p") && (test "$2" != "") then
-		shift
-		case "$1" in
-			sw1|sw2|sw3|farb1) 	printer=$1;;
-			*)			let "skipNum += 1";;
+		case "$2" in
+			sw1|sw2|sw3|farb1) 	printer=$2;;
+			*)			skip $1 $2;;
 		esac
-		shift
+		shift; shift
 	elif (test "$1" = "-n") && (test "$2" -gt 0) then
 		shift
 		printNum="-# $1"
@@ -69,18 +74,16 @@ while (test $# -gt 0); do
 		shift
 		shift
 	elif (test "$1" = "-c") && (test "$2" -ge 2) then
-		shift
-		case "$1" in
-			2|4|6|9)	compact="-o number-up=$1";;
-			*)		let "skipNum += 2";
+		case "$2" in
+			2|4|6|9)	compact="-o number-up=$2";;
+			*)		skip $1 $2;;
 		esac
-		shift
+		shift; shift
 	else
 		#unknown parameter -> ignore, warning message
 		#directory -> ignore (no -r, use regular expressions instead)
 		if !(test -d "$1";) then
-			let "skipNum += 1"
-			echo "Ignore $1 (misused/unknown parameter)"
+			skip $1
 		fi
 		shift
 	fi
