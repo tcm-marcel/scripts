@@ -21,9 +21,11 @@ fnames=		#file names (array)
 fcount=0	#amount of files to be printed (integer)
 skipNum=0	#amount of invalid parameters  (integer)
 printNum=	#amount of copies for all given files (string)
-pages=		#range of pages to print (for each file!) (string)
+lprRange=	#contains command line option for range print (lpr)
+#lprFitPage=	#contains command line option for lpr to fit-to-page
 lowEnd=		#lower end of page range (see line above this one)
 upperEnd=	#upper end of page range (see line above this one)
+compact=	#comand line option to print multiple pages on a single paper
 PDF=false	#return value of isPDF() $1 (boolean)
 
 stage() {
@@ -65,9 +67,14 @@ while (test $# -gt 0); do
 		printNum="-# $2"
 		shift; shift
 	elif (test "$1" = "-r") && (test "$2" != "") && (test "$3" != "") then
-		lowEnd=$2
-		upperEnd=$3
-		pages="-o page-ranges=$2-$3"
+		if (test "$2" -gt 0) && (test "$3" -gt "$2") then
+			lowEnd=$2
+			upperEnd=$3
+			lprRange="-o page-ranges=$2-$3"
+			#lprFitPage="-o fit-to-page"
+		else
+			skip "$1" "$2" "$3"
+		fi
 		shift; shift; shift
 	elif (test "$1" = "-c") && (test "$2" -ge 2) then
 		case "$2" in
@@ -99,8 +106,8 @@ if (test "$printNum" != "";) then
 	echo "WARNING: This will print ${printNum:3} copies of every file!"
 fi
 echo "This will print $fcount file(s) as \"$user\" on printer \"pool-$printer\""
-if (test "$pages" != "";) then
-        echo "Print pages ${pages:15} of every file."
+if (test "$lowEnd" != "") && (test "$upperEnd" != "") then
+        echo "Print pages $lowEnd-$upperEnd of every given PDF file."
 fi
 echo "Files: ${fpaths[@]}"
 echo "To abort, press CTRL+C when you are asked for the password."
@@ -112,14 +119,16 @@ echo "To abort, press CTRL+C when you are asked for the password."
 #create PDFs with the range given in -r
 #and use those to print, so -r works with -c properly.
 #Only do this if really necessary (-r in combination with -c is used)
-#because this fix needs `pdfjam` as dependency and takes some time.
-if (test "$pages" != "") && (test "$compact" != "") then
+#because this fix needs additional dependencies and takes some time.
+if (test "$lowEnd" != "") && (test "$upperEnd" != "") && (test "$compact" != "") then
         mkdir $dirTMP
+	lprRange=""
         for i in $(seq 0 ${#fpaths[@]})
                 do
                 isPDF "${fpaths[$i]}" #return value is $PDF
-                if ($PDF) then
+		if ($PDF) then
 			#filter pdf pages and save to /tmp/atis/
+			echo "DEBUG: $lowEnd-$upperEnd, $dirTMP"
 			gs -sDEVICE=pdfwrite -q -dNOPAUSE -dBATCH -dSAFER \
 				-dFirstPage=$lowEnd \
 				-dLastPage=$upperEnd \
@@ -144,6 +153,6 @@ echo "Copy files to ATIS account: "
 scp "${fpaths[@]}" "$user@i08fs1.ira.uka.de:~"
 echo "Print files and delete copies on ATIS account: "
 ssh -l $user i08fs1.ira.uka.de \
-	lpr -r -P pool-$printer $printNum $compact $pages "${fnames[@]}"
+	lpr -r -P pool-$printer -o fit-to-page $lprRange $printNum $compact "${fnames[@]}"
 rm -rf $dirTMP
 ###############################################################################
