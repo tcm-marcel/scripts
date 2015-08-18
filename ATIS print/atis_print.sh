@@ -50,6 +50,18 @@ skip() {
 	echo "Ignore $@ (invalid/unknown option)"
 }
 
+printHelp() {
+	echo "Print files in ATIS printers."
+	echo "Usage: "
+	echo "ATIS_print [file(s)] [-u user] [-p printer] [-n number-of-copies] [-r from to] [-c num]"
+	echo "The order of parameters is completely irrelevant."
+	echo "-u user: s_xxxxx account name."
+	echo "-p printer: sw1, sw2, sw3 or farb1"
+	echo "-r from to: Print only a given range of the given files."
+	echo "-c num: print num pages on one page."
+	echo "Bug found? Want to contribute? See https://github.com/tcm-marcel/scripts/tree/master/ATIS%20print"
+}
+
 while (test $# -gt 0); do
 	if (test -f "$1") then
 		stage "$1"
@@ -82,6 +94,9 @@ while (test $# -gt 0); do
 			*)		skip $1 $2;;
 		esac
 		shift; shift
+	elif (test "$1" = "--help") || (test "$1" = "-h") then
+		printHelp
+		exit 0
 	else
 		#unknown parameter -> ignore, warning message
 		#directory -> ignore (no -r, use regular expressions instead)
@@ -93,6 +108,7 @@ while (test $# -gt 0); do
 done
 if (test $fcount -le 0;) then
         echo "No file given"
+	printHelp
         exit 1
 fi
 ###############################################################################
