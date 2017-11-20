@@ -12,6 +12,7 @@ dirTMP=/tmp/atis
 ### Known bugs ###############################################################
 # - Files with same names in different directories in one atis_print call
 #   cause problems.
+# . if four slides are put on one page with -n 4 the order is unconvenient
 ##############################################################################
 
 
