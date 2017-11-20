@@ -6,7 +6,7 @@ Ubuntu Travis Indicator
 * A click on a build in the menu opens the job overview in the browser
 * The status icon color shows if the last own build succeeded or not
 
-![Screenshot](travis_indicator/screenshot.png?raw=true)
+![Screenshot](screenshot.png?raw=true)
 
 ## Get Started
 1. check `./travis_indicator.py` for required packets (all available via pip)
